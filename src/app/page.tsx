@@ -1,5 +1,6 @@
 "use client";
-import { ICrypto } from "@/lib/utils/mongo/models/Crypto";
+import { Button } from "@/components/ui/button";
+import { ICrypto } from "@/lib/mongo/models/Crypto";
 import axios from "axios";
 import { set } from "mongoose";
 import { useCallback, useEffect, useState } from "react";

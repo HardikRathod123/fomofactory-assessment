@@ -1,5 +1,5 @@
-import dbConnect from "@/lib/utils/mongo/dbConnect";
-import Crypto, { ICrypto } from "@/lib/utils/mongo/models/Crypto";
+import dbConnect from "@/lib/mongo/dbConnect";
+import Crypto, { ICrypto } from "@/lib/mongo/models/Crypto";
 import axios from "axios";
 import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
@@ -47,6 +47,6 @@ export async function GET(req: Request) {
 
     return Response.json(coins);
   } catch (error: any) {
-    return Response.json({ error: error.message });
+    return Response.json({ error: error?.message });
   }
 }

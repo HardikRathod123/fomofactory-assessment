@@ -27,7 +27,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "lib/utils/mongo/as"
+    "lib/mongo/as"
   ],
   "exclude": ["node_modules"]
 }
