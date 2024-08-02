@@ -14,23 +14,15 @@ export default function Home() {
   const [coins, setCoins] = useState([]);
   const [offset, setOffset] = useState(0);
   const limit = 5;
+  const intervalToFetch = 10000;
 
-  const fetchCoins = async (offset: number = 0) => {
-    // const response = await axios.get(
-    //   `/api/coinwatch?offset=${offset}&limit=${limit}`
-    // );
-    // return response.data;
-    return [];
+  const fetchCoinsHistory = async (offset: number = 0) => {
+    const response = await axios.get(`/api/coinwatch/price-history`);
+    return response.data;
   };
 
   useEffect(() => {
-    fetchCoins(offset).then((data) => setCoins(data));
-  }, [offset]);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setOffset((prevOffset) => prevOffset + limit); // Increase offset by limit
-    }, 10000);
+    const intervalId = setInterval(fetchCoinsHistory, intervalToFetch);
     return () => clearInterval(intervalId);
   }, []);
 
