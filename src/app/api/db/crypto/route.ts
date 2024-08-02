@@ -1,16 +1,9 @@
-// pages/api/crypto.ts
-import type { NextApiRequest, NextApiResponse } from "next";
-import mongoose from "mongoose";
 import Crypto from "@/lib/mongo/models/Crypto";
-import { NextResponse } from "next/server";
+import dbConnect from "@/lib/mongo/dbConnect";
 
-export default async function GET(req: Request, res: Response) {
+export async function GET(req: Request, res: Response) {
   try {
-    // Connect to your MongoDB database
-    if (!mongoose.connection.readyState) {
-      await mongoose.connect(process.env.MONGODB_URI as string);
-    }
-
+    await dbConnect();
     // Fetch the most recent 20 entries
     const cryptoData = await Crypto.find().sort({ createdAt: -1 }).limit(20);
 
