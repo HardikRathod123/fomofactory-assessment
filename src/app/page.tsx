@@ -1,24 +1,25 @@
 "use client";
+import React, { useEffect } from "react";
 import CryptoTable from "@/components/crypto/cryptoTable";
-import { Button } from "@/components/ui/button";
-import { ICrypto } from "@/lib/mongo/models/Crypto";
-import axios from "axios";
-import { set } from "mongoose";
-import { useCallback, useEffect, useState } from "react";
 import StoreProvider from "./StoreProvider";
 import RootLayout from "./layout";
+import CryptoSelector from "@/components/crypto/cryptoSelector";
+import axios from "axios";
+import HistoryTable from "@/components/crypto/historyTable";
+
 const COIN_WATCH_URL = process.env.NEXT_PUBLIC_COIN_WATCH_URL as string;
 const API_KEY = process.env.NEXT_PUBLIC_COIN_WATCH_API_KEY as string;
 
 export default function Home() {
-  const [coins, setCoins] = useState([]);
-  const [offset, setOffset] = useState(0);
-  const limit = 5;
   const intervalToFetch = 10000;
 
-  const fetchCoinsHistory = async (offset: number = 0) => {
-    const response = await axios.get(`/api/coinwatch/price-history`);
-    return response.data;
+  const fetchCoinsHistory = async () => {
+    try {
+      const response = await axios.get(`/api/coinwatch/price-history/update`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching coin history:", error);
+    }
   };
 
   useEffect(() => {
@@ -29,9 +30,12 @@ export default function Home() {
   return (
     <RootLayout>
       <StoreProvider>
-        <div>
-          <h1>Real-Time Stock/Crypto Tracker</h1>
-          <CryptoTable />
+        <div className="max-w-4xl mx-auto py-8">
+          <h1 className="text-2xl font-bold text-center mb-6">
+            Real-Time Stock/Crypto Tracker
+          </h1>
+          <CryptoSelector />
+          <HistoryTable />
         </div>
       </StoreProvider>
     </RootLayout>

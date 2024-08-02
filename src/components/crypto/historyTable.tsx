@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-// import { fetchCryptoData } from "../../../store/cryptoSlice";
+import { fetchCryptoDataByCode } from "../../../store/cryptoSlice";
 import { useAppDispatch, useAppSelector } from "../../../store/store";
 import {
   Table,
@@ -13,16 +13,19 @@ import {
   TableFooter,
 } from "../ui/table";
 
-const CryptoTable = () => {
+const HistoryTable = () => {
   const dispatch = useAppDispatch();
   const cryptoStatus = useAppSelector((state) => state.cryptoReducer.status);
-  const cryptoData = useAppSelector((state) => state.cryptoReducer.data);
+  const cryptoHistory = useAppSelector((state) => state.cryptoReducer.data);
+  const selectedCrypto = useAppSelector(
+    (state) => state.cryptoReducer.selectedCrypto
+  );
 
   useEffect(() => {
-    if (cryptoStatus === "idle") {
-      // dispatch(fetchCryptoData());
+    if (selectedCrypto) {
+      dispatch(fetchCryptoDataByCode(selectedCrypto));
     }
-  }, [dispatch, cryptoStatus]);
+  }, [dispatch, selectedCrypto]);
 
   if (cryptoStatus === "loading") {
     return <div className="text-center py-4">Loading...</div>;
@@ -36,25 +39,27 @@ const CryptoTable = () => {
         </TableCaption>
         <TableHeader className="bg-gray-100">
           <TableRow>
-            <TableHead className="py-2 px-4 text-left">Code</TableHead>
-            <TableHead className="py-2 px-4 text-left">Rate</TableHead>
-            <TableHead className="py-2 px-4 text-left">Symbol</TableHead>
+            <TableHead className="py-2 px-4 text-left">
+              Market Capital
+            </TableHead>
+            <TableHead className="py-2 px-4 text-left">Date</TableHead>
+            <TableHead className="py-2 px-4 text-left">Price</TableHead>
             <TableHead className="py-2 px-4 text-right">Volume</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {cryptoData.map((crypto) => (
+          {cryptoHistory.map((history, index) => (
             <TableRow
-              key={crypto.code}
+              key={index}
               className="border-t border-gray-200 hover:bg-gray-50"
             >
-              <TableCell className="py-2 px-4">{crypto.code}</TableCell>
+              <TableCell className="py-2 px-4">{history.cap}$</TableCell>
               <TableCell className="py-2 px-4">
-                {crypto.rate.toFixed(2)}
+                {new Date(history.date).toLocaleString()}
               </TableCell>
-              <TableCell className="py-2 px-4">{crypto.symbol}</TableCell>
+              <TableCell className="py-2 px-4">{history.rate}$</TableCell>
               <TableCell className="py-2 px-4 text-right">
-                {crypto.volume.toLocaleString()}
+                {history.volume.toLocaleString()}
               </TableCell>
             </TableRow>
           ))}
@@ -67,4 +72,4 @@ const CryptoTable = () => {
   );
 };
 
-export default CryptoTable;
+export default HistoryTable;

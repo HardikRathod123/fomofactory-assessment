@@ -2,7 +2,7 @@ import dbConnect from "@/lib/mongo/dbConnect";
 import Crypto, { ICrypto } from "@/lib/mongo/models/Crypto";
 import CryptoHistory from "@/lib/mongo/models/Crypto-history";
 import axios from "axios";
-import { cryptoList } from "../../../../../constant";
+import { cryptoList } from "../../../../../../constant";
 
 const COIN_WATCH_URL = process.env.COIN_WATCH_URL as string;
 const API_KEY = process.env.COIN_WATCH_API_KEY as string;
@@ -13,7 +13,7 @@ async function fetchCoinHistory(code: string) {
     {
       currency: "USD",
       code: code,
-      start: Date.now() - 60 * 1000, // Last minute
+      start: Date.now() - 60 * 60 * 1000, // Last minute
       end: Date.now(),
     },
     {

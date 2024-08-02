@@ -1,64 +1,64 @@
 // store/cryptoSlice.ts
 import { ICrypto } from "@/lib/mongo/models/Crypto";
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  PayloadAction,
+  Dispatch,
+} from "@reduxjs/toolkit";
 import axios from "axios";
+import { cryptoList } from "../constant";
+import { useAppSelector } from "./store";
+
+type history = {
+  date: Date;
+  rate: number;
+  volume: number;
+  cap: number;
+};
 
 export interface CryptoDataState {
-  data: ICrypto[];
+  data: history[];
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null | undefined;
-  selectedCrypto: ICrypto | null;
+  selectedCrypto: string;
 }
 
 const initialState: CryptoDataState = {
   data: [],
   status: "idle",
   error: null,
-  selectedCrypto: null,
+  selectedCrypto: cryptoList[0],
 };
-
-// Define async thunk to fetch data from API
-export const fetchCryptoData = createAsyncThunk(
-  "crypto/fetchCryptoData",
-  async () => {
-    const response = await axios.get(`/api/db/crypto`);
-    return response.data;
-  }
-);
 
 export const fetchCryptoDataByCode = createAsyncThunk(
   "crypto/fetchCryptoDataByCode",
-  async (code: string) => {
-    const response = await axios.get(`/api/db/crypto/get-by-code?code=${code}`);
-    return response.data;
+  async (selectedCrypto: string) => {
+    const response = await axios.get(
+      `/api/coinwatch/price-history/get-all?code=${selectedCrypto}`
+    );
+    return response.data.history;
   }
 );
 
 const cryptoSlice = createSlice({
   name: "crypto",
   initialState,
-  reducers: {},
+  reducers: {
+    setSelectedCrypto: (state, action) => {
+      state.selectedCrypto = action.payload;
+      fetchCryptoDataByCode(action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder
-      //Reducers for fetchCryptoData
-      .addCase(fetchCryptoData.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(fetchCryptoData.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.data = action.payload;
-      })
-      .addCase(fetchCryptoData.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      })
       //Reducers for fetchCryptoDataByCode
       .addCase(fetchCryptoDataByCode.pending, (state) => {
         state.status = "loading";
       })
       .addCase(fetchCryptoDataByCode.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.selectedCrypto = action.payload;
+        state.data = action.payload;
       })
       .addCase(fetchCryptoDataByCode.rejected, (state, action) => {
         state.status = "failed";
@@ -66,5 +66,7 @@ const cryptoSlice = createSlice({
       });
   },
 });
+
+export const { setSelectedCrypto } = cryptoSlice.actions;
 
 export default cryptoSlice.reducer;
