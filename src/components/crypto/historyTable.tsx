@@ -23,7 +23,11 @@ const HistoryTable = () => {
 
   useEffect(() => {
     if (selectedCrypto) {
-      dispatch(fetchCryptoDataByCode(selectedCrypto));
+      const fetchInterval = setInterval(
+        () => dispatch(fetchCryptoDataByCode(selectedCrypto)),
+        10000
+      );
+      return () => clearInterval(fetchInterval);
     }
   }, [dispatch, selectedCrypto]);
 
