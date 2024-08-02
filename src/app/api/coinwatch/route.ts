@@ -1,12 +1,16 @@
 import dbConnect from "@/lib/utils/mongo/dbConnect";
 import Crypto, { ICrypto } from "@/lib/utils/mongo/models/Crypto";
 import axios from "axios";
+import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
 const COIN_WATCH_URL = process.env.COIN_WATCH_URL as string;
 const API_KEY = process.env.COIN_WATCH_API_KEY as string;
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
+    const { searchParams } = new URL(req.url);
+    const offset = parseInt(searchParams.get("offset") || "0");
+    const limit = parseInt(searchParams.get("limit") || "5");
     await dbConnect();
     const coinData = await axios.post(
       COIN_WATCH_URL + "/coins/list",
@@ -14,8 +18,8 @@ export async function GET() {
         currency: "USD",
         sort: "rank",
         order: "ascending",
-        offset: 0,
-        limit: 5, // Fetching 5 coins for demonstration
+        offset: offset,
+        limit: limit,
         meta: true,
       },
       {
