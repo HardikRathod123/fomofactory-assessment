@@ -21,7 +21,7 @@ Follow these steps to set up and run the project:
 ```
 
 2. **Install dependencies and start Docker containers:**
-   Run the following command to install all necessary npm packages, copy environment variables, and start Docker containers:
+   Run the following command to install all necessary npm packages, copy environment variables, and start Docker containers(after copying env file please make sure to replace API keys for coinwatch by going to : https://www.livecoinwatch.com/tools/api):
 
 ```bash
     npm run setup
