@@ -7,8 +7,8 @@ import CryptoSelector from "@/components/crypto/cryptoSelector";
 import axios from "axios";
 import HistoryTable from "@/components/crypto/historyTable";
 
-const COIN_WATCH_URL = process.env.NEXT_PUBLIC_COIN_WATCH_URL as string;
-const API_KEY = process.env.NEXT_PUBLIC_COIN_WATCH_API_KEY as string;
+const COIN_WATCH_URL = process.env.COIN_WATCH_URL as string;
+const API_KEY = process.env.COIN_WATCH_API_KEY as string;
 
 export default function Home() {
   const intervalToFetch = 10000;

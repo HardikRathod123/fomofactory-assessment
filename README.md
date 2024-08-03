@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Assessment Project
 
-## Getting Started
+This project is a real-time cryptocurrency data tracking application. It periodically updates cryptocurrency data in a database using a third-party API and fetches the updated data on the frontend every 10 seconds.
 
-First, run the development server:
+## Prerequisites
+
+Before you begin, ensure you have met the following requirements:
+
+- **Docker**: Make sure Docker is installed and running on your machine.
+- **Node.js**: You should be using Node.js version `20.9.0`. If you have `nvm` (Node Version Manager) installed, the correct version will be automatically installed and used.
+
+## Setup Instructions
+
+Follow these steps to set up and run the project:
+
+1. **Clone the repository** to your local machine:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+    git clone git@github.com:HardikRathod123/fomofactory-assessment.git
+    cd fomofactory-assessment
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Install dependencies and start Docker containers:**
+   Run the following command to install all necessary npm packages, copy environment variables, and start Docker containers:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+    npm run setup
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+3. **Start the development server:**
+   After completing the setup, start the development server with:
 
-## Learn More
+```bash
+    npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+4. You're good to go! Open your browser and navigate to http://localhost:3000 to view the application.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Functionality
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Data Update: The application fetches cryptocurrency data from a third-party API and updates it in the database every 10 seconds.
+- Data Fetch: The frontend periodically fetches the latest data from the database at 10-second intervals, ensuring real-time updates.
 
-## Deploy on Vercel
+## Additional Information
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Environment Variables: The project uses a .env.local file for environment variables. These are automatically copied from .env.example during setup.
+- Docker Configuration: Ensure Docker is running as it will be used to manage the database and any other necessary services.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Troubleshooting
+
+If you encounter any issues during setup or while running the application, please check the following:
+
+- Ensure Docker is running correctly and no other services are using the ports required by this project.
+- Verify that you are using the correct Node.js version (20.9.0). If you have nvm installed, you can run nvm use to switch to the correct version.
